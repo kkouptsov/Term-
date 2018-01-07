@@ -3,6 +3,16 @@ cmake_minimum_required(VERSION 3.2)
 
 project(loader)
 
+set(GCC_LIB_LOAD_LINK_FLAGS "-ldl")
+
+if(WIN32)
+	add_subdirectory(Windows)
+endif(WIN32)
+if(UNIX)
+	add_subdirectory(Unix)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_LIB_LOAD_LINK_FLAGS}")
+endif(UNIX)
+
 set(SOURCES
 	${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
 )
