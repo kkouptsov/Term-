@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import os, sys
 from subprocess import call, check_call, CalledProcessError
 
@@ -9,13 +7,15 @@ from subprocess import call, check_call, CalledProcessError
 
 print 'python version: ', sys.version
 
-SOURCE                 = os.path.abspath('src')
-BUILD                  = os.path.abspath('build')
+project_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+
+SOURCE                 = os.path.abspath('/'.join([project_dir, 'src']))
+BUILD                  = os.path.abspath('/'.join([project_dir, 'build']))
 BUILD_TYPE             = 'Debug'
 
 """
 do this:
-cmake -G "Unix Makefiles" BUILD
+cmake -G "Visual Studio 14 2015 Win64" BUILD
 """
 
 def ensure_dir(dir):
@@ -31,15 +31,15 @@ def try_remove_file(file):
 cmake_args = [
 	'cmake',
 	'-G',
-	'Unix Makefiles',
-	'-DCMAKE_BUILD_TYPE:STRING=' +  BUILD_TYPE,
+	'Visual Studio 14 2015 Win64',
+#    '-DCMAKE_BUILD_TYPE:STRING=' +  BUILD_TYPE,
 	SOURCE
 ]
 
 print ''
-print BUILD,'$ ',cmake_args[0],'\\'
+print BUILD,'> ',cmake_args[0],'^'
 for arg in cmake_args[1:-1]:
-        print '\t',arg,'\\'
+        print '\t',arg,'^'
 print '\t',cmake_args[-1]
 print ''
 
