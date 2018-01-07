@@ -3,6 +3,7 @@ project(loader)
 
 set(SOURCES
 	${SOURCES}
+	${CMAKE_CURRENT_SOURCE_DIR}/libload.c
 	PARENT_SCOPE
 )
 

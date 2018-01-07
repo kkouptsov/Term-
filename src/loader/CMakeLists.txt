@@ -15,12 +15,13 @@ endif(UNIX)
 
 set(SOURCES
 	${SOURCES}
-	${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/main.c
 )
 
 set(HEADERS
 	${HEADERS}
 	${INCLUDE_DIRECTORY}/term.h
+	${CMAKE_CURRENT_SOURCE_DIR}/libload.h
 )
 
 include_directories(

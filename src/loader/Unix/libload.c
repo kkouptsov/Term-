@@ -8,16 +8,25 @@
 * or go to https://www.gnu.org/licenses/lgpl-3.0.html
 */
 
-#include <iostream>
-#include "term.h"
+#include <dlfcn.h>
+#include <stdlib.h>
 
-EXTERN_C LIBAPI const char* version(void)
+#include "libload.h"
+
+
+lib_handle_t load_library(const char *name)
 {
-	return VERSION;
+	return (lib_handle_t) dlopen(name, RTLD_LAZY);
 }
 
 
-EXTERN_C LIBAPI void initialize(void)
+void* get_library_function(lib_handle_t handle, const char *name)
 {
-	std::cout << VERSION << std::endl;
+	return dlsym(handle, name);
+}
+
+
+void close_library(lib_handle_t handle)
+{
+	dlclose(handle);
 }

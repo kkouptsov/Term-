@@ -8,16 +8,13 @@
 * or go to https://www.gnu.org/licenses/lgpl-3.0.html
 */
 
-#include <iostream>
-#include "term.h"
+#ifndef LIBLOAD_H
+#define LIBLOAD_H
 
-EXTERN_C LIBAPI const char* version(void)
-{
-	return VERSION;
-}
+typedef void* lib_handle_t;
 
+lib_handle_t load_library(const char *);
+void* get_library_function(lib_handle_t, const char *);
+void close_library(lib_handle_t);
 
-EXTERN_C LIBAPI void initialize(void)
-{
-	std::cout << VERSION << std::endl;
-}
+#endif /* LIBLOAD_H */
