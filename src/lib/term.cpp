@@ -19,5 +19,13 @@ EXTERN_C LIBAPI const char* version(void)
 
 EXTERN_C LIBAPI void initialize(void)
 {
+	/* TODO */
 	std::cout << VERSION << std::endl;
+}
+
+
+EXTERN_C LIBAPI const char* readline(void)
+{
+	/* TODO */
+	return "quit";
 }

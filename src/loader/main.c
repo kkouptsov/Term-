@@ -26,17 +26,23 @@ int main(void)
 	lib_handle_t  handle;
 	version_fun_t version;
 	initialize_fun_t init;
+	readline_fun_t readline;
 
 	handle = load_library(LIBNAME);
 	if (handle == NULL)
 		return 1;
-	version = (version_fun_t) get_library_function(handle, "version");
-	if (version != NULL) {
+	if ((version = (version_fun_t) get_library_function(handle, "version")) != NULL) {
 		printf("%s\n", version());
 	}
-	init = (initialize_fun_t) get_library_function(handle, "initialize");
-	if (init != NULL) {
+	if ((init = (initialize_fun_t) get_library_function(handle, "initialize")) != NULL) {
 		init();
+	}
+	if ((readline = (readline_fun_t) get_library_function(handle, "readline")) != NULL) {
+		const char *input = readline();
+		while (strncmp(input, "quit", strlen("quit")) != 0) {
+			printf("%s\n", input);
+			input = readline();
+		} 
 	}
 	close_library(handle);
 	return 0;

@@ -33,8 +33,10 @@
 
 EXTERN_C LIBAPI const char* version(void);
 EXTERN_C LIBAPI void initialize(void);
+EXTERN_C LIBAPI const char* readline(void);
 
 typedef const char* (*version_fun_t)(void);
 typedef void (*initialize_fun_t)(void);
+typedef const char* (*readline_fun_t)(void);
 
 #endif
