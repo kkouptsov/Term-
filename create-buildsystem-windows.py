@@ -10,11 +10,6 @@ print 'python version: ', sys.version
 SOURCE                 = os.path.abspath('src')
 BUILD                  = os.path.abspath('build')
 BUILD_TYPE             = 'Debug'
-MAJOR_VERSION          = '0'
-MINOR_VERSION          = '0'
-MICRO_VERSION          = '1'
-
-version                = '.'.join([MAJOR_VERSION, MINOR_VERSION, MICRO_VERSION])
 
 """
 do this:
