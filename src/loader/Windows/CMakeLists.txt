@@ -1,5 +1,5 @@
 
-project(library)
+project(loader)
 
 set(SOURCES
 	${SOURCES}

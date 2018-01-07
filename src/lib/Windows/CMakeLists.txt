@@ -1,8 +1,13 @@
 
 project(library)
 
-set(SOURCE
-	${SOURCE}
+set(SOURCES
+	${SOURCES}
+	PARENT_SCOPE
+)
+
+set(HEADERS
+	${HEADERS}
 	PARENT_SCOPE
 )
 

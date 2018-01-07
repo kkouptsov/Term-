@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.2)
 
 project(library)
 
+add_definitions(-DLIBRARY)
+
 if(WIN32)
 	add_subdirectory(Windows)
 endif(WIN32)
@@ -16,6 +18,7 @@ set(SOURCES
 )
 
 set(HEADERS
+	${HEADERS}
 	${INCLUDE_DIRECTORY}/term.h
 )
 

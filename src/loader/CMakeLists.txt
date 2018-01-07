@@ -14,10 +14,12 @@ if(UNIX)
 endif(UNIX)
 
 set(SOURCES
+	${SOURCES}
 	${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
 )
 
 set(HEADERS
+	${HEADERS}
 	${INCLUDE_DIRECTORY}/term.h
 )
 
