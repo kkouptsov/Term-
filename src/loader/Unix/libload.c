@@ -1,5 +1,5 @@
 /*
-* This file is part of the Term++ project, <URL>.
+* This file is part of the Term++ project, https://github.com/kkouptsov/term-plus-plus.
 *
 * Copyright (c) 2018 by Konstantin Kouptsov <konstantin@kouptsov.com>.
 *
