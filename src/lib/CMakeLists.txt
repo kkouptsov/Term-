@@ -7,22 +7,26 @@ add_definitions(-DLIBRARY)
 
 if(WIN32)
 	add_subdirectory(Windows)
+	include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Windows)
 endif(WIN32)
 if(UNIX)
 	add_subdirectory(Unix)
+	include_directories(${CMAKE_CURRENT_SOURCE_DIR}/Unix)
 endif(UNIX)
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 set(SOURCES
 	${SOURCES}
 	${CMAKE_CURRENT_SOURCE_DIR}/term.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/console.cpp
 )
 
 set(HEADERS
 	${HEADERS}
 	${INCLUDE_DIRECTORY}/term.h
+	${CMAKE_CURRENT_SOURCE_DIR}/console.h
 )
-
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 add_library(term SHARED ${SOURCES} ${HEADERS})
 
