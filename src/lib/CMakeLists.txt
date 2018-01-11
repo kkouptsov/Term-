@@ -19,7 +19,6 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 set(SOURCES
 	${SOURCES}
 	${CMAKE_CURRENT_SOURCE_DIR}/term.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/console.cpp
 )
 
 set(HEADERS

@@ -9,7 +9,10 @@
 */
 
 #include <iostream>
+#include <memory>
 #include "term.h"
+#include "console.h"
+
 
 EXTERN_C LIBAPI const char* version(void)
 {
@@ -17,10 +20,24 @@ EXTERN_C LIBAPI const char* version(void)
 }
 
 
-EXTERN_C LIBAPI void initialize(void)
+EXTERN_C LIBAPI int initialize(void)
 {
-	/* TODO */
-	std::cout << VERSION << std::endl;
+	try {
+		// try learning console capabilities
+		Terminal::Console & cons = Terminal::Console::getInstance();
+		if (!cons.isatty()) {
+			// not interactive
+			return 1;
+		}
+
+		// TODO
+		std::cout << VERSION << std::endl;
+		return 0;
+	}
+	catch (...) {
+		// no console or console is not suitable for our purpose
+		return 1;
+	}
 }
 
 

@@ -11,11 +11,9 @@
 #ifndef CONSOLE_IMPL_H
 #define CONSOLE_IMPL_H
 
+#include "console.h"
+
 namespace Terminal {
-
-class ConsoleImpl {
-
-};
 
 }
 
