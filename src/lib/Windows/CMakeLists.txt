@@ -1,6 +1,8 @@
 
 project(library)
 
+add_definitions(-D_DEBUG -DDEBUG -DNDEBUG)
+
 set(SOURCES
 	${SOURCES}
 	${CMAKE_CURRENT_SOURCE_DIR}/console_impl.cpp
