@@ -19,8 +19,8 @@ class Console {
 public:
 	bool isatty();
 private:
-	std::unique_ptr<ConsoleImpl> impl;
 	class ConsoleImpl;
+	std::unique_ptr<ConsoleImpl> impl; // platform-specific data
 
 	Console();
 	~Console();
