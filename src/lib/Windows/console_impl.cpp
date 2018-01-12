@@ -15,10 +15,10 @@
 
 namespace Terminal {
 
-struct Console::ConsoleImpl {
-	bool isatty();
+class Console::ConsoleImpl {
 	ConsoleImpl();
 	~ConsoleImpl();
+	bool isatty();
 };
 
 Console::Console() : impl{std::make_unique<ConsoleImpl>()} {}

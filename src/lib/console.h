@@ -19,8 +19,8 @@ class Console {
 public:
 	bool isatty();
 private:
-	struct ConsoleImpl;
 	std::unique_ptr<ConsoleImpl> impl;
+	class ConsoleImpl;
 
 	Console();
 	~Console();
