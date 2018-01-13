@@ -11,5 +11,7 @@ set(INSTALL_DIRECTORY ${PROJECT_DIRECTORY}/bin)
 
 include_directories(${INCLUDE_DIRECTORY})
 
+set(CMAKE_CXX_STANDARD 14)
+
 add_subdirectory(loader)
 add_subdirectory(lib)
