@@ -11,7 +11,6 @@
 #include <windows.h>
 
 #include <string>
-#include <cassert>
 #include "utils.h"
 
 namespace Terminal {
@@ -20,7 +19,8 @@ namespace Utils {
 
 std::string format_error_as_string(DWORD msgid)
 {
-	assert(msgid != 0);
+	if (msgid == 0)
+		return std::string();
 	LPTSTR buffer = NULL;
 	DWORD len = FormatMessage(
 		FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_IGNORE_INSERTS,
@@ -35,11 +35,7 @@ std::string format_error_as_string(DWORD msgid)
 
 std::string get_last_error()
 {
-	DWORD msgid = GetLastError();
-	if (msgid == 0) {
-		return std::string();
-	}
-	return format_error_as_string(msgid);
+	return format_error_as_string(GetLastError());
 }
 
 
