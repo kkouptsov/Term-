@@ -76,10 +76,10 @@ void Console::ConsoleImpl::set_raw_mode(DWORD &mode)
 	if ((in == INVALID_HANDLE_VALUE) || (in == NULL) || !GetConsoleMode(in, &mode)) {
 		throw NotTTYException(Utils::get_last_error());
 	}
-	DWORD new_mode = mode
+	DWORD new_mode = (mode
 		& ~ENABLE_LINE_INPUT        // ReadConsoleInput reads one character at a time
 		& ~ENABLE_ECHO_INPUT        // do not automatically echo characters
-		& ~ENABLE_PROCESSED_INPUT   // no special handling of certain characters
+		& ~ENABLE_PROCESSED_INPUT)   // no special handling of certain characters
 		| ENABLE_WINDOW_INPUT;      // get windows resize events
 	if (!SetConsoleMode(in, new_mode)) {
 		throw NotTTYException(Utils::get_last_error());
