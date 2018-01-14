@@ -24,6 +24,7 @@ public:
 	~ConsoleImpl();
 	bool isatty();
 	void get_mode(DWORD&);
+	void set_mode(DWORD&);
 	void set_raw_mode(DWORD&);
 	void get_geometry(CONSOLE_SCREEN_BUFFER_INFO&);
 };
@@ -55,6 +56,15 @@ void Console::ConsoleImpl::get_mode(DWORD &mode)
 {
 	HANDLE in = GetStdHandle(STD_INPUT_HANDLE);
 	if ((in == INVALID_HANDLE_VALUE) || (in == NULL) || !GetConsoleMode(in, &mode)) {
+		throw NotTTYException(Utils::get_last_error());
+	}
+}
+
+
+void Console::ConsoleImpl::set_mode(DWORD &mode)
+{
+	HANDLE in = GetStdHandle(STD_INPUT_HANDLE);
+	if ((in == INVALID_HANDLE_VALUE) || (in == NULL) || !SetConsoleMode(in, mode)) {
 		throw NotTTYException(Utils::get_last_error());
 	}
 }
