@@ -13,10 +13,10 @@
 
 #include <exception>
 
-class NotTTYException : public std::runtime_error {
+class ConsoleException : public std::runtime_error {
 public:
-	NotTTYException() : std::runtime_error("Not a TTY") {}
-	NotTTYException(std::string what) : std::runtime_error(what) {}
+	ConsoleException() : std::runtime_error("") {}
+	ConsoleException(std::string what) : std::runtime_error(what) {}
 };
 
 
