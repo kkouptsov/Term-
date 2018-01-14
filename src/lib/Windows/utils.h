@@ -12,6 +12,8 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <string>
+
 namespace Terminal {
 namespace Utils {
 

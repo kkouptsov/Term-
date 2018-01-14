@@ -10,7 +10,6 @@
 
 #include <windows.h>
 
-#include <string>
 #include "utils.h"
 
 namespace Terminal {

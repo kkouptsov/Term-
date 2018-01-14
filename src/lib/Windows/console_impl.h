@@ -16,9 +16,6 @@
 
 namespace Terminal {
 
-struct ConsoleMode {
-	DWORD state;
-};
 
 }
 
