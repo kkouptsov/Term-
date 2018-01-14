@@ -11,9 +11,14 @@
 #ifndef CONSOLE_IMPL_H
 #define CONSOLE_IMPL_H
 
+#include <windows.h>
 #include "console.h"
 
 namespace Terminal {
+
+struct ConsoleMode {
+	DWORD state;
+};
 
 }
 

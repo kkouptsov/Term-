@@ -8,7 +8,6 @@
 * or go to https://www.gnu.org/licenses/lgpl-3.0.html
 */
 
-#include <windows.h>
 
 #include <iostream>
 #include <string>
@@ -23,9 +22,9 @@ public:
 	ConsoleImpl();
 	~ConsoleImpl();
 	bool isatty();
-	void get_mode(DWORD&);
-	void set_mode(DWORD&);
-	void set_raw_mode(DWORD&);
+	void get_mode(ConsoleMode &);
+	void set_mode(ConsoleMode &);
+	void set_raw_mode(ConsoleMode &);
 	void get_geometry(CONSOLE_SCREEN_BUFFER_INFO&);
 };
 
@@ -52,36 +51,36 @@ void Console::ConsoleImpl::get_geometry(CONSOLE_SCREEN_BUFFER_INFO &info)
 }
 
 
-void Console::ConsoleImpl::get_mode(DWORD &mode)
+void Console::ConsoleImpl::get_mode(ConsoleMode &mode)
 {
 	HANDLE in = GetStdHandle(STD_INPUT_HANDLE);
-	if ((in == INVALID_HANDLE_VALUE) || (in == NULL) || !GetConsoleMode(in, &mode)) {
+	if ((in == INVALID_HANDLE_VALUE) || (in == NULL) || !GetConsoleMode(in, &mode.state)) {
 		throw NotTTYException(Utils::get_last_error());
 	}
 }
 
 
-void Console::ConsoleImpl::set_mode(DWORD &mode)
+void Console::ConsoleImpl::set_mode(ConsoleMode &mode)
 {
 	HANDLE in = GetStdHandle(STD_INPUT_HANDLE);
-	if ((in == INVALID_HANDLE_VALUE) || (in == NULL) || !SetConsoleMode(in, mode)) {
+	if ((in == INVALID_HANDLE_VALUE) || (in == NULL) || !SetConsoleMode(in, mode.state)) {
 		throw NotTTYException(Utils::get_last_error());
 	}
 }
 
 
-void Console::ConsoleImpl::set_raw_mode(DWORD &mode)
+void Console::ConsoleImpl::set_raw_mode(ConsoleMode &mode)
 {
 	HANDLE in = GetStdHandle(STD_INPUT_HANDLE);
-	if ((in == INVALID_HANDLE_VALUE) || (in == NULL) || !GetConsoleMode(in, &mode)) {
+	if ((in == INVALID_HANDLE_VALUE) || (in == NULL) || !GetConsoleMode(in, &mode.state)) {
 		throw NotTTYException(Utils::get_last_error());
 	}
-	DWORD new_mode = (mode
+	DWORD new_state = (mode.state
 		& ~ENABLE_LINE_INPUT        // ReadConsoleInput reads one character at a time
 		& ~ENABLE_ECHO_INPUT        // do not automatically echo characters
 		& ~ENABLE_PROCESSED_INPUT)   // no special handling of certain characters
 		| ENABLE_WINDOW_INPUT;      // get windows resize events
-	if (!SetConsoleMode(in, new_mode)) {
+	if (!SetConsoleMode(in, new_state)) {
 		throw NotTTYException(Utils::get_last_error());
 	}
 }
@@ -89,7 +88,7 @@ void Console::ConsoleImpl::set_raw_mode(DWORD &mode)
 
 bool Console::ConsoleImpl::isatty() {
 	try {
-		DWORD mode;
+		ConsoleMode mode;
 		CONSOLE_SCREEN_BUFFER_INFO info;
 		get_mode(mode);
 		get_geometry(info);
