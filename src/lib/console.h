@@ -15,9 +15,12 @@
 
 namespace Terminal {
 
+
 class Console {
 public:
 	bool isatty();
+	void set_raw_mode(bool);
+	bool is_raw_mode();
 private:
 	class ConsoleImpl;
 	std::unique_ptr<ConsoleImpl> impl; // platform-specific data
