@@ -40,7 +40,7 @@ bool Console::isatty() { return impl->isatty(); }
 bool Console::is_raw_mode() { return impl->is_raw_mode(); }
 void Console::set_raw_mode(bool flag) { return impl->set_raw_mode(flag); }
 
-Console::ConsoleImpl::ConsoleImpl() : raw_flag{false} {
+Console::ConsoleImpl::ConsoleImpl() : mode {}, raw_flag { false } {
 }
 
 
@@ -97,7 +97,7 @@ void Console::ConsoleImpl::set_raw_mode(bool flag)
 		DWORD raw = (mode
 			& ~ENABLE_LINE_INPUT        // ReadConsoleInput reads one character at a time
 			& ~ENABLE_ECHO_INPUT        // do not automatically echo characters
-			& ~ENABLE_PROCESSED_INPUT)   // no special handling of certain characters
+			& ~ENABLE_PROCESSED_INPUT)  // no special handling of certain characters
 			| ENABLE_WINDOW_INPUT;      // get windows resize events
 		if (!SetConsoleMode(in, raw)) {
 			throw ConsoleException(Utils::get_last_error());
