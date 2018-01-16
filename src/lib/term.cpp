@@ -32,9 +32,10 @@ EXTERN_C LIBAPI int initialize(void)
 
 		// TODO
 		std::cout << cons.is_raw_mode() << std::endl;
-		cons.set_raw_mode(true);
-		std::cout << cons.is_raw_mode() << std::endl;
-		cons.set_raw_mode(false);
+		{
+			Terminal::Console::RawModeGuard guard{cons};
+			std::cout << cons.is_raw_mode() << std::endl;
+		}
 		std::cout << cons.is_raw_mode() << std::endl;
 		std::cout << VERSION << std::endl;
 		return 0;

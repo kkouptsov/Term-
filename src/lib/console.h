@@ -19,12 +19,12 @@ namespace Terminal {
 class Console {
 public:
 	bool isatty();
-	void set_raw_mode(bool);
 	bool is_raw_mode();
 private:
 	class ConsoleImpl;
 	std::unique_ptr<ConsoleImpl> impl; // platform-specific data
 
+	void set_raw_mode(bool);
 	Console();
 	~Console();
 public:
@@ -35,7 +35,24 @@ public:
 
 	Console(const Console &) = delete;
 	Console& operator=(const Console &) = delete;
+	class RawModeGuard;
 };
+
+
+class Console::RawModeGuard {
+private:
+	Terminal::Console & c_;
+public:
+	RawModeGuard(Terminal::Console & c) : c_{c} {
+		c_.set_raw_mode(true);
+	}
+	~RawModeGuard() {
+		try { c_.set_raw_mode(false); } catch (...) {}
+	}
+	RawModeGuard(const RawModeGuard &) = delete;
+	RawModeGuard& operator=(const RawModeGuard &) = delete;
+};
+
 
 }
 
