@@ -8,9 +8,8 @@
 * or go to https://www.gnu.org/licenses/lgpl-3.0.html
 */
 
-#include <windows.h>
-
 #include "utils.h"
+#include "except.h"
 
 namespace Terminal {
 namespace Utils {
@@ -35,6 +34,16 @@ std::string format_error_as_string(DWORD msgid)
 std::string get_last_error()
 {
 	return format_error_as_string(GetLastError());
+}
+
+
+HANDLE get_handle(DWORD device)
+{
+	HANDLE h = GetStdHandle(device);
+	if ((h == INVALID_HANDLE_VALUE) || (h == NULL)) {
+		throw ConsoleException(get_last_error());
+	}
+	return h;
 }
 
 

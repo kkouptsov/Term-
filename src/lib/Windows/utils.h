@@ -12,6 +12,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <windows.h>
 #include <string>
 
 namespace Terminal {
@@ -19,6 +20,7 @@ namespace Utils {
 
 std::string get_last_error(void);
 std::string format_error_as_string(DWORD);
+HANDLE get_handle(DWORD);
 
 }
 }

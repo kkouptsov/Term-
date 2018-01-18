@@ -50,8 +50,8 @@ Console::ConsoleImpl::~ConsoleImpl() {
 
 void Console::ConsoleImpl::get_geometry(CONSOLE_SCREEN_BUFFER_INFO &info)
 {
-	HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
-	if ((out == INVALID_HANDLE_VALUE) || (out == NULL) || !GetConsoleScreenBufferInfo(out, &info)) {
+	HANDLE out = Utils::get_handle(STD_OUTPUT_HANDLE);
+	if (!GetConsoleScreenBufferInfo(out, &info)) {
 		throw ConsoleException(Utils::get_last_error());
 	}
 }
@@ -78,11 +78,12 @@ bool Console::ConsoleImpl::is_raw_mode() {
 
 void Console::ConsoleImpl::get_mode(DWORD &mode)
 {
-	HANDLE in = GetStdHandle(STD_INPUT_HANDLE);
-	if ((in == INVALID_HANDLE_VALUE) || (in == NULL) || !GetConsoleMode(in, &mode)) {
+	HANDLE in = Utils::get_handle(STD_INPUT_HANDLE);
+	if (!GetConsoleMode(in, &mode)) {
 		throw ConsoleException(Utils::get_last_error());
 	}
 }
+
 
 void Console::ConsoleImpl::set_raw_mode(bool flag)
 {
@@ -90,8 +91,8 @@ void Console::ConsoleImpl::set_raw_mode(bool flag)
 		return;
 	else if (flag) {
 		// switch to raw mode
-		HANDLE in = GetStdHandle(STD_INPUT_HANDLE);
-		if ((in == INVALID_HANDLE_VALUE) || (in == NULL) || !GetConsoleMode(in, &mode)) {
+		HANDLE in = Utils::get_handle(STD_INPUT_HANDLE);
+		if (!GetConsoleMode(in, &mode)) {
 			throw ConsoleException(Utils::get_last_error());
 		}
 		DWORD raw = (mode
@@ -102,16 +103,15 @@ void Console::ConsoleImpl::set_raw_mode(bool flag)
 		if (!SetConsoleMode(in, raw)) {
 			throw ConsoleException(Utils::get_last_error());
 		}
-		raw_flag = true;
 	}
 	else {
 		// switch to cooked mode
-		HANDLE in = GetStdHandle(STD_INPUT_HANDLE);
-		if ((in == INVALID_HANDLE_VALUE) || (in == NULL) || !SetConsoleMode(in, mode)) {
+		HANDLE in = Utils::get_handle(STD_INPUT_HANDLE);
+		if (!SetConsoleMode(in, mode)) {
 			throw ConsoleException(Utils::get_last_error());
 		}
-		raw_flag = false;
 	}
+	raw_flag = flag;
 }
 
 } // namespace Terminal
