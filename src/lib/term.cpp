@@ -29,15 +29,6 @@ EXTERN_C LIBAPI int initialize(void)
 			// not interactive
 			return 1;
 		}
-
-		// TODO
-		std::cout << cons.is_raw_mode() << std::endl;
-		{
-			Terminal::Console::RawModeGuard guard{cons};
-			std::cout << cons.is_raw_mode() << std::endl;
-		}
-		std::cout << cons.is_raw_mode() << std::endl;
-		std::cout << VERSION << std::endl;
 		return 0;
 	}
 	catch (...) {
@@ -49,6 +40,19 @@ EXTERN_C LIBAPI int initialize(void)
 
 EXTERN_C LIBAPI const char* readline(void)
 {
-	/* TODO */
+	try {
+		Terminal::Console & cons = Terminal::Console::getInstance();
+		std::cout << cons.is_raw_mode() << std::endl;
+		{
+			Terminal::Console::RawModeGuard guard{cons};
+			// TODO
+			std::cout << cons.is_raw_mode() << std::endl;
+			std::cout << VERSION << std::endl;
+		}
+		std::cout << cons.is_raw_mode() << std::endl;
+	}
+	catch (...) {
+
+	}
 	return "quit";
 }
