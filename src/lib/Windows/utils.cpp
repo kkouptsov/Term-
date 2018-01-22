@@ -47,5 +47,15 @@ HANDLE get_handle(DWORD device)
 }
 
 
+void get_screen_dimensions(CONSOLE_SCREEN_BUFFER_INFO &info)
+{
+	HANDLE out = get_handle(STD_OUTPUT_HANDLE);
+	if (!GetConsoleScreenBufferInfo(out, &info)) {
+		throw ConsoleException(get_last_error());
+	}
+}
+
+
+
 }
 }

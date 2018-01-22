@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <string>
+#include <utility>
 #include "console_impl.h"
 #include "except.h"
 #include "utils.h"
@@ -27,20 +28,20 @@ public:
 	bool isatty();
 	bool is_raw_mode();
 	void set_raw_mode(bool);
-
-	void get_mode(DWORD &mode);
-	void get_geometry(CONSOLE_SCREEN_BUFFER_INFO&);
+	void get_mode(DWORD &);
+private:
 };
 
 
 Console::Console() : impl{std::make_unique<ConsoleImpl>()} {}
+
 Console::~Console() = default;
 
 bool Console::isatty() { return impl->isatty(); }
 bool Console::is_raw_mode() { return impl->is_raw_mode(); }
 void Console::set_raw_mode(bool flag) { return impl->set_raw_mode(flag); }
 
-Console::ConsoleImpl::ConsoleImpl() : mode {}, raw_flag { false } {
+Console::ConsoleImpl::ConsoleImpl() : mode {}, raw_flag {false} {
 }
 
 
@@ -48,12 +49,14 @@ Console::ConsoleImpl::~ConsoleImpl() {
 }
 
 
-void Console::ConsoleImpl::get_geometry(CONSOLE_SCREEN_BUFFER_INFO &info)
+std::pair<uint16_t, uint16_t> Console::get_screen_size()
 {
-	HANDLE out = Utils::get_handle(STD_OUTPUT_HANDLE);
-	if (!GetConsoleScreenBufferInfo(out, &info)) {
-		throw ConsoleException(Utils::get_last_error());
-	}
+	CONSOLE_SCREEN_BUFFER_INFO info;
+	Utils::get_screen_dimensions(info);
+	return std::make_pair<uint16_t, uint16_t>(
+		uint16_t(info.srWindow.Right - info.srWindow.Left + 1),
+		uint16_t(info.srWindow.Bottom - info.srWindow.Top + 1)
+		);
 }
 
 
@@ -62,9 +65,9 @@ bool Console::ConsoleImpl::isatty() {
 		DWORD mode;
 		CONSOLE_SCREEN_BUFFER_INFO info;
 		get_mode(mode);
-		get_geometry(info);
+		Utils::get_screen_dimensions(info);
 	}
-	catch (ConsoleException) {
+	catch (ConsoleException &) {
 		return false;
 	}
 	return true;
