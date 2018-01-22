@@ -31,7 +31,10 @@ public:
 };
 
 
-Console::Console() : impl{std::make_unique<ConsoleImpl>()} {}
+Console::Console() : impl{std::make_unique<ConsoleImpl>()} {
+	// setupterm(NULL, fileno(stdout), &error);
+}
+
 Console::~Console() = default;
 
 bool Console::isatty() { return impl->isatty(); }
