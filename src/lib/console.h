@@ -12,6 +12,7 @@
 #define CONSOLE_H
 
 #include <memory>
+#include <utility>
 
 namespace Terminal {
 
@@ -20,6 +21,9 @@ class Console {
 public:
 	bool isatty();
 	bool is_raw_mode();
+	const char* readline();
+	const char* readstream();
+	std::pair<uint16_t, uint16_t> get_screen_size();
 private:
 	class ConsoleImpl;
 	std::unique_ptr<ConsoleImpl> impl; // platform-specific data
