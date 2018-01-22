@@ -9,7 +9,6 @@
 */
 
 #include <iostream>
-#include <memory>
 #include "term.h"
 #include "console.h"
 
@@ -22,19 +21,8 @@ EXTERN_C LIBAPI const char* version(void)
 
 EXTERN_C LIBAPI int initialize(void)
 {
-	try {
-		// try learning console capabilities
-		Terminal::Console & cons = Terminal::Console::getInstance();
-		if (!cons.isatty()) {
-			// not interactive
-			return 1;
-		}
-		return 0;
-	}
-	catch (...) {
-		// no console or console is not suitable for our purpose
-		return 1;
-	}
+	// TODO
+	return 1;
 }
 
 
@@ -42,17 +30,14 @@ EXTERN_C LIBAPI const char* readline(void)
 {
 	try {
 		Terminal::Console & cons = Terminal::Console::getInstance();
-		std::cout << cons.is_raw_mode() << std::endl;
-		{
-			Terminal::Console::RawModeGuard guard{cons};
-			// TODO
-			std::cout << cons.is_raw_mode() << std::endl;
-			std::cout << VERSION << std::endl;
+		if (cons.isatty()) {
+			return cons.readline();
 		}
-		std::cout << cons.is_raw_mode() << std::endl;
+		else {
+			return cons.readstream();
+		}
 	}
 	catch (...) {
-
+		return nullptr;
 	}
-	return "quit";
 }
