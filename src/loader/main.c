@@ -29,6 +29,8 @@ int main(void)
 	initialize_fun_t init;
 	readline_fun_t readline;
 
+	term_config_t config = { .callbacks = NULL };
+
 	handle = load_library(LIBNAME);
 	if (handle == NULL)
 		return 1;
@@ -36,7 +38,7 @@ int main(void)
 		printf("%s\n", version());
 	}
 	if ((init = (initialize_fun_t) get_library_function(handle, "initialize")) != NULL) {
-		init();
+		init(&config);
 	}
 	if ((readline = (readline_fun_t) get_library_function(handle, "readline")) != NULL) {
 		const char *input = readline();

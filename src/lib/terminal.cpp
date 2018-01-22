@@ -19,7 +19,7 @@ EXTERN_C LIBAPI const char* version(void)
 }
 
 
-EXTERN_C LIBAPI int initialize(void)
+EXTERN_C LIBAPI int initialize(term_config_t *config)
 {
 	// TODO
 	return 1;
