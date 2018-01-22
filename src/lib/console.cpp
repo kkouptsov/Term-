@@ -16,14 +16,14 @@ namespace Terminal {
 
 const char* Console::readline()
 {
-	std::cout << is_raw_mode() << std::endl;
+	std::cout << scr.is_raw_mode() << std::endl;
 	{
 		RawModeGuard guard{*this};
-		std::cout << is_raw_mode() << std::endl;
-		std::pair<uint16_t, uint16_t> size = get_screen_size();
+		std::cout << scr.is_raw_mode() << std::endl;
+		std::pair<uint16_t, uint16_t> size = scr.get_size();
 		std::cout << size.first << " x " << size.second << std::endl;
 	}
-	std::cout << is_raw_mode() << std::endl;
+	std::cout << scr.is_raw_mode() << std::endl;
 	return "quit";
 }
 

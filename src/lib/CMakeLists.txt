@@ -27,6 +27,7 @@ set(HEADERS
 	${INCLUDE_DIRECTORY}/terminal.h
 	${CMAKE_CURRENT_SOURCE_DIR}/console.h
 	${CMAKE_CURRENT_SOURCE_DIR}/except.h
+	${CMAKE_CURRENT_SOURCE_DIR}/screen.h
 )
 
 add_library(term SHARED ${SOURCES} ${HEADERS})

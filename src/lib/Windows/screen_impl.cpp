@@ -8,23 +8,27 @@
 * or go to https://www.gnu.org/licenses/lgpl-3.0.html
 */
 
+#include <windows.h>
 
 #include <iostream>
 #include <string>
 #include <utility>
-#include "console_impl.h"
+#include <memory>
+
+#include "screen.h"
 #include "except.h"
 #include "utils.h"
 
+
 namespace Terminal {
 
-class Console::ConsoleImpl {
+class Screen::ScreenImpl {
 private:
 	DWORD mode;
 	bool raw_flag;
 public:
-	ConsoleImpl();
-	~ConsoleImpl();
+	ScreenImpl() : mode {}, raw_flag {false} {}
+	~ScreenImpl() = default;
 	bool isatty();
 	bool is_raw_mode();
 	void set_raw_mode(bool);
@@ -33,23 +37,15 @@ private:
 };
 
 
-Console::Console() : impl{std::make_unique<ConsoleImpl>()} {}
+Screen::Screen() : impl{std::make_unique<Screen::ScreenImpl>()} {}
+Screen::~Screen() = default;
 
-Console::~Console() = default;
-
-bool Console::isatty() { return impl->isatty(); }
-bool Console::is_raw_mode() { return impl->is_raw_mode(); }
-void Console::set_raw_mode(bool flag) { return impl->set_raw_mode(flag); }
-
-Console::ConsoleImpl::ConsoleImpl() : mode {}, raw_flag {false} {
-}
+bool Screen::isatty() { return impl->isatty(); }
+bool Screen::is_raw_mode() { return impl->is_raw_mode(); }
+void Screen::set_raw_mode(bool flag) { return impl->set_raw_mode(flag); }
 
 
-Console::ConsoleImpl::~ConsoleImpl() {
-}
-
-
-std::pair<uint16_t, uint16_t> Console::get_screen_size()
+std::pair<uint16_t, uint16_t> Screen::get_size()
 {
 	CONSOLE_SCREEN_BUFFER_INFO info;
 	Utils::get_screen_dimensions(info);
@@ -60,7 +56,7 @@ std::pair<uint16_t, uint16_t> Console::get_screen_size()
 }
 
 
-bool Console::ConsoleImpl::isatty() {
+bool Screen::ScreenImpl::isatty() {
 	try {
 		DWORD mode;
 		CONSOLE_SCREEN_BUFFER_INFO info;
@@ -74,12 +70,12 @@ bool Console::ConsoleImpl::isatty() {
 }
 
 
-bool Console::ConsoleImpl::is_raw_mode() {
+bool Screen::ScreenImpl::is_raw_mode() {
 	return raw_flag;
 }
 
 
-void Console::ConsoleImpl::get_mode(DWORD &mode)
+void Screen::ScreenImpl::get_mode(DWORD &mode)
 {
 	HANDLE in = Utils::get_handle(STD_INPUT_HANDLE);
 	if (!GetConsoleMode(in, &mode)) {
@@ -88,7 +84,7 @@ void Console::ConsoleImpl::get_mode(DWORD &mode)
 }
 
 
-void Console::ConsoleImpl::set_raw_mode(bool flag)
+void Screen::ScreenImpl::set_raw_mode(bool flag)
 {
 	if (flag == raw_flag)
 		return;

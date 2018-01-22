@@ -11,6 +11,7 @@
 #include <iostream>
 #include "terminal.h"
 #include "console.h"
+#include "screen.h"
 
 
 EXTERN_C LIBAPI const char* version(void)

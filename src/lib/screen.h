@@ -7,16 +7,24 @@
 * For the full license information, see LICENSE
 * or go to https://www.gnu.org/licenses/lgpl-3.0.html
 */
-
-#ifndef CONSOLE_IMPL_H
-#define CONSOLE_IMPL_H
-
-#include <windows.h>
-#include "console.h"
+#ifndef SCREEN_H
+#define SCREEN_H
 
 namespace Terminal {
 
+class Screen {
+public:
+	bool is_raw_mode();
+	void set_raw_mode(bool);
+	bool isatty();
+	std::pair<uint16_t, uint16_t> get_size();
+	Screen();
+	~Screen();
+private:
+	class ScreenImpl;
+	std::unique_ptr<ScreenImpl> impl; // platform-specific data
+};
 
 }
 
-#endif /* CONSOLE_IMPL_H */
+#endif /* SRC_LIB_SCREEN_H_ */

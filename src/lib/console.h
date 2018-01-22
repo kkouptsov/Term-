@@ -14,23 +14,21 @@
 #include <memory>
 #include <utility>
 
+#include "screen.h"
+
 namespace Terminal {
 
 
 class Console {
 public:
-	bool isatty();
-	bool is_raw_mode();
 	const char* readline();
 	const char* readstream();
-	std::pair<uint16_t, uint16_t> get_screen_size();
+	bool isatty() {return scr.isatty();}
 private:
-	class ConsoleImpl;
-	std::unique_ptr<ConsoleImpl> impl; // platform-specific data
+	Screen scr;
 
-	void set_raw_mode(bool);
-	Console();
-	~Console();
+	Console() {}
+	~Console() {}
 public:
 	static Console & getInstance() {
 		static Console instance;
@@ -48,10 +46,10 @@ private:
 	Terminal::Console & c_;
 public:
 	RawModeGuard(Terminal::Console & c) : c_{c} {
-		c_.set_raw_mode(true);
+		c_.scr.set_raw_mode(true);
 	}
 	~RawModeGuard() {
-		try { c_.set_raw_mode(false); } catch (...) {}
+		try { c_.scr.set_raw_mode(false); } catch (...) {}
 	}
 	RawModeGuard(const RawModeGuard &) = delete;
 	RawModeGuard& operator=(const RawModeGuard &) = delete;

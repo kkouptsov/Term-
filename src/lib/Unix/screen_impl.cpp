@@ -12,57 +12,56 @@
 #include <unistd.h>
 
 #include <iostream>
-#include "console_impl.h"
+#include "screen_impl.h"
 #include "except.h"
 #include "utils.h"
 
 namespace Terminal {
 
-class Console::ConsoleImpl {
+class Screen::ScreenImpl {
 private:
 	struct termios mode;
 	bool raw_flag;
 public:
-	ConsoleImpl();
-	~ConsoleImpl();
+	ScreenImpl();
+	~ScreenImpl();
 	bool isatty();
 	bool is_raw_mode();
 	void set_raw_mode(bool);
 };
 
 
-Console::Console() : impl{std::make_unique<ConsoleImpl>()} {
+Screen::Screen() : impl{std::make_unique<ScreenImpl>()} {
 	// setupterm(NULL, fileno(stdout), &error);
 }
 
-Console::~Console() = default;
 
-bool Console::isatty() { return impl->isatty(); }
-bool Console::is_raw_mode() { return impl->is_raw_mode(); }
-void Console::set_raw_mode(bool flag) { return impl->set_raw_mode(flag); }
+bool Screen::isatty() { return impl->isatty(); }
+bool Screen::is_raw_mode() { return impl->is_raw_mode(); }
+void Screen::set_raw_mode(bool flag) { return impl->set_raw_mode(flag); }
 
 
-Console::ConsoleImpl::ConsoleImpl() : raw_flag{false} {
+Screen::ScreenImpl::ConsoleImpl() : raw_flag{false} {
 }
 
 
-Console::ConsoleImpl::~ConsoleImpl() {
+Screen::ScreenImpl::~ConsoleImpl() {
 }
 
 
-bool Console::ConsoleImpl::isatty() {
+bool Screen::ScreenImpl::isatty() {
 	if (::isatty(fileno(stdin)) && ::isatty(fileno(stdout)))
 		return true;
 	return false;
 }
 
 
-bool Console::ConsoleImpl::is_raw_mode() {
+bool Screen::ScreenImpl::is_raw_mode() {
 	return raw_flag;
 }
 
 
-void Console::ConsoleImpl::set_raw_mode(bool flag)
+void Screen::ScreenImpl::set_raw_mode(bool flag)
 {
 	if (flag == raw_flag)
 		return;
@@ -99,5 +98,4 @@ void Console::ConsoleImpl::set_raw_mode(bool flag)
 	}
 }
 
-}
-
+} // namespace Terminal
