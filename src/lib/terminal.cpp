@@ -9,7 +9,7 @@
 */
 
 #include <iostream>
-#include "term.h"
+#include "terminal.h"
 #include "console.h"
 
 

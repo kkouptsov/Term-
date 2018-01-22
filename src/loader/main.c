@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "term.h"
+#include "terminal.h"
 #include "libload.h"
 
 #ifdef _WIN32

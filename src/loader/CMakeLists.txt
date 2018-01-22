@@ -20,7 +20,7 @@ set(SOURCES
 
 set(HEADERS
 	${HEADERS}
-	${INCLUDE_DIRECTORY}/term.h
+	${INCLUDE_DIRECTORY}/terminal.h
 	${CMAKE_CURRENT_SOURCE_DIR}/libload.h
 )
 

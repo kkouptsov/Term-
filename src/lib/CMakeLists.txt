@@ -18,13 +18,13 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 set(SOURCES
 	${SOURCES}
-	${CMAKE_CURRENT_SOURCE_DIR}/term.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/terminal.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/console.cpp
 )
 
 set(HEADERS
 	${HEADERS}
-	${INCLUDE_DIRECTORY}/term.h
+	${INCLUDE_DIRECTORY}/terminal.h
 	${CMAKE_CURRENT_SOURCE_DIR}/console.h
 	${CMAKE_CURRENT_SOURCE_DIR}/except.h
 )
