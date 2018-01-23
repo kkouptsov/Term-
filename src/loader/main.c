@@ -29,7 +29,11 @@ int main(void)
 	initialize_fun_t init;
 	readline_fun_t readline;
 
-	term_config_t config = { .callbacks = NULL };
+	term_config_t config = {
+		.callbacks = {
+			.terminate = NULL
+		}
+	};
 
 	handle = load_library(LIBNAME);
 	if (handle == NULL)

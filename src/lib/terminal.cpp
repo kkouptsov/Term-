@@ -13,6 +13,15 @@
 #include "console.h"
 #include "screen.h"
 
+namespace Terminal {
+static term_config_t  config;
+
+void init_config(term_config_t *cnf)
+{
+	// TODO
+}
+} // namespace Terminal
+
 
 EXTERN_C LIBAPI const char* version(void)
 {
