@@ -12,7 +12,7 @@
 #include <unistd.h>
 
 #include <iostream>
-#include "screen_impl.h"
+#include "screen.h"
 #include "except.h"
 #include "utils.h"
 
@@ -23,29 +23,38 @@ private:
 	struct termios m_mode;
 	bool m_raw_flag;
 public:
-	ScreenImpl();
-	~ScreenImpl();
 	bool isatty();
 	bool is_raw_mode();
 	void set_raw_mode(bool);
+	std::pair<uint16_t, uint16_t> get_size();
+	void resize();
+	ScreenImpl() : m_raw_flag{false} {}
+	~ScreenImpl() = default;
 };
 
 
 Screen::Screen() : impl{std::make_unique<ScreenImpl>()} {
 	// setupterm(NULL, fileno(stdout), &error);
 }
+Screen::~Screen() = default;
 
 
-bool Screen::isatty() { return impl->isatty(); }
 bool Screen::is_raw_mode() { return impl->is_raw_mode(); }
 void Screen::set_raw_mode(bool flag) { return impl->set_raw_mode(flag); }
+bool Screen::isatty() { return impl->isatty(); }
+void Screen::resize() { return impl->resize(); }
+std::pair<uint16_t, uint16_t> Screen::get_size() { return impl->get_size(); }
 
-
-Screen::ScreenImpl::ConsoleImpl() : m_raw_flag{false} {
+std::pair<uint16_t, uint16_t> Screen::ScreenImpl::get_size()
+{
+	// TODO
+	return std::make_pair<uint16_t, uint16_t>(0, 0);
 }
 
 
-Screen::ScreenImpl::~ConsoleImpl() {
+void Screen::ScreenImpl::resize()
+{
+	// TODO
 }
 
 

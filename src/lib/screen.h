@@ -10,6 +10,8 @@
 #ifndef SCREEN_H
 #define SCREEN_H
 
+#include <memory>
+
 namespace Terminal {
 
 class Screen {
