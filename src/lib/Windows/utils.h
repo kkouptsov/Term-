@@ -22,6 +22,8 @@ std::string get_last_error(void);
 std::string format_error_as_string(DWORD);
 HANDLE get_handle(DWORD);
 void get_screen_dimensions(CONSOLE_SCREEN_BUFFER_INFO &);
+bool isatty();
+void get_mode(DWORD &);
 
 }
 }

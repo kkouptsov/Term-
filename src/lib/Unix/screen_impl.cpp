@@ -20,8 +20,8 @@ namespace Terminal {
 
 class Screen::ScreenImpl {
 private:
-	struct termios mode;
-	bool raw_flag;
+	struct termios m_mode;
+	bool m_raw_flag;
 public:
 	ScreenImpl();
 	~ScreenImpl();
@@ -41,7 +41,7 @@ bool Screen::is_raw_mode() { return impl->is_raw_mode(); }
 void Screen::set_raw_mode(bool flag) { return impl->set_raw_mode(flag); }
 
 
-Screen::ScreenImpl::ConsoleImpl() : raw_flag{false} {
+Screen::ScreenImpl::ConsoleImpl() : m_raw_flag{false} {
 }
 
 
@@ -57,20 +57,20 @@ bool Screen::ScreenImpl::isatty() {
 
 
 bool Screen::ScreenImpl::is_raw_mode() {
-	return raw_flag;
+	return m_raw_flag;
 }
 
 
 void Screen::ScreenImpl::set_raw_mode(bool flag)
 {
-	if (flag == raw_flag)
+	if (flag == m_raw_flag)
 		return;
 	else if (flag) {
 		// switch to raw mode
-		if (tcgetattr(fileno(stdin), &mode)) {
+		if (tcgetattr(fileno(stdin), &m_mode)) {
 			throw ConsoleException(Utils::get_last_error());
 		}
-		struct termios raw = mode;
+		struct termios raw = m_mode;
 		/*
 		   see 'man tcsetattr'
 		*/
@@ -87,14 +87,14 @@ void Screen::ScreenImpl::set_raw_mode(bool flag)
 		if (tcsetattr(fileno(stdin), TCSAFLUSH, &raw)) {
 			throw ConsoleException(Utils::get_last_error());
 		}
-		raw_flag = true;
+		m_raw_flag = true;
 	}
 	else {
 		// switch to cooked mode
-		if (tcsetattr(fileno(stdin), TCSAFLUSH, &mode)) {
+		if (tcsetattr(fileno(stdin), TCSAFLUSH, &m_mode)) {
 			throw ConsoleException(Utils::get_last_error());
 		}
-		raw_flag = false;
+		m_raw_flag = false;
 	}
 }
 

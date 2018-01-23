@@ -56,6 +56,28 @@ void get_screen_dimensions(CONSOLE_SCREEN_BUFFER_INFO &info)
 }
 
 
+void get_mode(DWORD &mode)
+{
+	HANDLE in = get_handle(STD_INPUT_HANDLE);
+	if (!GetConsoleMode(in, &mode)) {
+		throw ConsoleException(Utils::get_last_error());
+	}
+}
+
+
+bool isatty() {
+	try {
+		DWORD mode;
+		CONSOLE_SCREEN_BUFFER_INFO info;
+		get_mode(mode);
+		get_screen_dimensions(info);
+	}
+	catch (ConsoleException &) {
+		return false;
+	}
+	return true;
+}
+
 
 }
 }

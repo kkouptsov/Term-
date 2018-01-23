@@ -15,16 +15,17 @@ namespace Terminal {
 class Screen {
 public:
 	bool is_raw_mode();
-	void set_raw_mode(bool);
+	void set_raw_mode(bool flag);
 	bool isatty();
+	void resize();
 	std::pair<uint16_t, uint16_t> get_size();
 	Screen();
 	~Screen();
 private:
 	class ScreenImpl;
-	std::unique_ptr<ScreenImpl> impl; // platform-specific data
+	std::unique_ptr<ScreenImpl> impl; // platform-specific code
 };
 
 }
 
-#endif /* SRC_LIB_SCREEN_H_ */
+#endif /* SCREEN_H */

@@ -23,78 +23,58 @@
 namespace Terminal {
 
 class Screen::ScreenImpl {
-private:
-	DWORD mode;
-	bool raw_flag;
 public:
-	ScreenImpl() : mode {}, raw_flag {false} {}
-	~ScreenImpl() = default;
-	bool isatty();
-	bool is_raw_mode();
+	bool is_raw_mode() { return m_raw_flag; };
 	void set_raw_mode(bool);
-	void get_mode(DWORD &);
+	std::pair<uint16_t, uint16_t> get_size();
+	void resize();
+	ScreenImpl() : m_mode {}, m_raw_flag {false} {}
+	~ScreenImpl() = default;
+private:
+	DWORD m_mode;
+	CONSOLE_SCREEN_BUFFER_INFO m_info;
+	bool m_raw_flag;
 private:
 };
 
 
-Screen::Screen() : impl{std::make_unique<Screen::ScreenImpl>()} {}
+Screen::Screen() : impl {std::make_unique<Screen::ScreenImpl>()} {}
 Screen::~Screen() = default;
 
-bool Screen::isatty() { return impl->isatty(); }
 bool Screen::is_raw_mode() { return impl->is_raw_mode(); }
 void Screen::set_raw_mode(bool flag) { return impl->set_raw_mode(flag); }
+bool Screen::isatty() { return Utils::isatty(); }
+void Screen::resize() { return impl->resize(); }
+std::pair<uint16_t, uint16_t> Screen::get_size() { return impl->get_size(); }
 
 
-std::pair<uint16_t, uint16_t> Screen::get_size()
+std::pair<uint16_t, uint16_t> Screen::ScreenImpl::get_size()
 {
-	CONSOLE_SCREEN_BUFFER_INFO info;
-	Utils::get_screen_dimensions(info);
+	Utils::get_screen_dimensions(m_info);
 	return std::make_pair<uint16_t, uint16_t>(
-		uint16_t(info.srWindow.Right - info.srWindow.Left + 1),
-		uint16_t(info.srWindow.Bottom - info.srWindow.Top + 1)
+		uint16_t(m_info.srWindow.Right - m_info.srWindow.Left + 1),
+		uint16_t(m_info.srWindow.Bottom - m_info.srWindow.Top + 1)
 		);
 }
 
 
-bool Screen::ScreenImpl::isatty() {
-	try {
-		DWORD mode;
-		CONSOLE_SCREEN_BUFFER_INFO info;
-		get_mode(mode);
-		Utils::get_screen_dimensions(info);
-	}
-	catch (ConsoleException &) {
-		return false;
-	}
-	return true;
-}
-
-
-bool Screen::ScreenImpl::is_raw_mode() {
-	return raw_flag;
-}
-
-
-void Screen::ScreenImpl::get_mode(DWORD &mode)
+void Screen::ScreenImpl::resize()
 {
-	HANDLE in = Utils::get_handle(STD_INPUT_HANDLE);
-	if (!GetConsoleMode(in, &mode)) {
-		throw ConsoleException(Utils::get_last_error());
-	}
+	Utils::get_screen_dimensions(m_info);
 }
 
 
 void Screen::ScreenImpl::set_raw_mode(bool flag)
 {
-	if (flag == raw_flag)
+	if (flag == m_raw_flag)
 		return;
 	else if (flag) {
 		// switch to raw mode
 		HANDLE in = Utils::get_handle(STD_INPUT_HANDLE);
-		if (!GetConsoleMode(in, &mode)) {
+		if (!GetConsoleMode(in, &m_mode)) {
 			throw ConsoleException(Utils::get_last_error());
 		}
-		DWORD raw = (mode
+		DWORD raw = (m_mode
 			& ~ENABLE_LINE_INPUT        // ReadConsoleInput reads one character at a time
 			& ~ENABLE_ECHO_INPUT        // do not automatically echo characters
 			& ~ENABLE_PROCESSED_INPUT)  // no special handling of certain characters
@@ -106,11 +86,11 @@ void Screen::ScreenImpl::set_raw_mode(bool flag)
 	else {
 		// switch to cooked mode
 		HANDLE in = Utils::get_handle(STD_INPUT_HANDLE);
-		if (!SetConsoleMode(in, mode)) {
+		if (!SetConsoleMode(in, m_mode)) {
 			throw ConsoleException(Utils::get_last_error());
 		}
 	}
-	raw_flag = flag;
+	m_raw_flag = flag;
 }
 
 } // namespace Terminal
