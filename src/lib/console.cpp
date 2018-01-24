@@ -21,20 +21,6 @@ namespace Terminal {
 
 static char *buffer = nullptr;
 
-void Console::get_input(std::promise<std::string> &p)
-{
-	std::cout << scr.is_raw_mode() << std::endl;
-	{
-		Console::RawModeGuard guard {*this};
-		std::cout << scr.is_raw_mode() << std::endl;
-		std::pair<uint16_t, uint16_t> size = scr.get_size();
-		std::cout << size.first << " x " << size.second << std::endl;
-		p.set_value(std::string("quit"));
-	}
-	std::cout << scr.is_raw_mode() << std::endl;
-}
-
-
 const char* Console::readline()
 {
 	std::promise<std::string> p;
@@ -42,12 +28,13 @@ const char* Console::readline()
 	
 	/*
 	    Run a separate thread, which will collect input events
-	    until the input string is ready. 
+	    until the input string is ready. This is done so that
+	    user interaction is not blocked by calls cb.timeout() below.
 	 */
-	std::thread th(&Console::get_input, this, std::ref(p));
+	std::thread th(&Screen::get_input, &scr, std::ref(p));
 
 	/*
-	    While waiting for user input call back into the application.
+	    While waiting for user input, call back into the application.
 	 */
 	std::future_status status;
 	callbacks_t cb = Terminal::config.callbacks;

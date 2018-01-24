@@ -29,7 +29,6 @@ public:
 	bool isatty() {return scr.isatty();}
 private:
 	Screen scr;
-	void get_input(std::promise<std::string> &);
 
 	Console() {}
 	~Console() {}
@@ -41,22 +40,6 @@ public:
 
 	Console(const Console &) = delete;
 	Console& operator=(const Console &) = delete;
-	class RawModeGuard;
-};
-
-
-class Console::RawModeGuard {
-private:
-	Terminal::Console & c_;
-public:
-	RawModeGuard(Terminal::Console & c) : c_{c} {
-		c_.scr.set_raw_mode(true);
-	}
-	~RawModeGuard() {
-		try { c_.scr.set_raw_mode(false); } catch (...) {}
-	}
-	RawModeGuard(const RawModeGuard &) = delete;
-	RawModeGuard& operator=(const RawModeGuard &) = delete;
 };
 
 

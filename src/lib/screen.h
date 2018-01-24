@@ -21,12 +21,31 @@ public:
 	bool isatty();
 	void resize();
 	std::pair<uint16_t, uint16_t> get_size();
+	void get_input(std::promise<std::string> &);
 	Screen();
 	~Screen();
 private:
 	class ScreenImpl;
 	std::unique_ptr<ScreenImpl> impl; // platform-specific code
+	class RawModeGuard;
 };
+
+
+class Screen::RawModeGuard {
+private:
+	Screen & c_;
+public:
+	RawModeGuard(Screen & c) : c_ {c} {
+		c_.set_raw_mode(true);
+	}
+	~RawModeGuard() {
+		try { c_.set_raw_mode(false); }
+		catch (...) {}
+	}
+	RawModeGuard(const RawModeGuard &) = delete;
+	RawModeGuard& operator=(const RawModeGuard &) = delete;
+};
+
 
 }
 

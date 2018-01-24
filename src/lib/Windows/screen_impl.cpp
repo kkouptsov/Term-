@@ -14,6 +14,7 @@
 #include <string>
 #include <utility>
 #include <memory>
+#include <future>
 
 #include "screen.h"
 #include "except.h"
@@ -46,6 +47,21 @@ void Screen::set_raw_mode(bool flag) { return impl->set_raw_mode(flag); }
 bool Screen::isatty() { return Utils::isatty(); }
 void Screen::resize() { return impl->resize(); }
 std::pair<uint16_t, uint16_t> Screen::get_size() { return impl->get_size(); }
+
+
+void Screen::get_input(std::promise<std::string> &p)
+{
+	// TODO
+	std::cout << is_raw_mode() << std::endl;
+	{
+		Screen::RawModeGuard guard {*this};
+		std::cout << is_raw_mode() << std::endl;
+		std::pair<uint16_t, uint16_t> size = get_size();
+		std::cout << size.first << " x " << size.second << std::endl;
+		p.set_value(std::string("quit"));
+	}
+	std::cout << is_raw_mode() << std::endl;
+}
 
 
 std::pair<uint16_t, uint16_t> Screen::ScreenImpl::get_size()
