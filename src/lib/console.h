@@ -13,6 +13,7 @@
 
 #include <memory>
 #include <utility>
+#include <future>
 
 #include "config.h"
 #include "screen.h"
@@ -28,6 +29,7 @@ public:
 	bool isatty() {return scr.isatty();}
 private:
 	Screen scr;
+	void get_input(std::promise<std::string> &);
 
 	Console() {}
 	~Console() {}
