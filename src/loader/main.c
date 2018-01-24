@@ -31,6 +31,7 @@ int main(void)
 
 	term_config_t config = {
 		.callbacks = {
+			.timeout = NULL,
 			.terminate = NULL
 		}
 	};
