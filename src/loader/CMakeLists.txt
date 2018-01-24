@@ -21,6 +21,7 @@ set(SOURCES
 set(HEADERS
 	${HEADERS}
 	${INCLUDE_DIRECTORY}/terminal.h
+	${INCLUDE_DIRECTORY}/config.h
 	${CMAKE_CURRENT_SOURCE_DIR}/libload.h
 )
 

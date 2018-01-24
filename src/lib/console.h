@@ -14,10 +14,12 @@
 #include <memory>
 #include <utility>
 
+#include "config.h"
 #include "screen.h"
 
 namespace Terminal {
 
+extern term_config_t config;
 
 class Console {
 public:

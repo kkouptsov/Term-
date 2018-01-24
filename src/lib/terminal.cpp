@@ -14,12 +14,14 @@
 #include "screen.h"
 
 namespace Terminal {
-static term_config_t  config;
 
-void init_config(term_config_t *cnf)
+term_config_t config;
+
+static void init_config(term_config_t *cnf)
 {
-	// TODO
+	config = *cnf;
 }
+
 } // namespace Terminal
 
 
@@ -31,7 +33,7 @@ EXTERN_C LIBAPI const char* version(void)
 
 EXTERN_C LIBAPI int initialize(term_config_t *config)
 {
-	// TODO
+	Terminal::init_config(config);
 	return 1;
 }
 

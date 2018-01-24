@@ -11,6 +11,8 @@
 #ifndef TERM_H
 #define TERM_H
 
+#include "config.h"
+
 #ifndef EXTERN_C
 #ifdef __cplusplus
 #define EXTERN_C extern "C"
@@ -30,17 +32,6 @@
 #endif
 
 #define VERSION "0.0.1"
-
-typedef void(*terminate_t)(void);
-
-typedef struct callbacks {
-	terminate_t terminate;
-} callbacks_t;
-
-typedef struct term_config {
-	callbacks_t callbacks;
-} term_config_t;
-
 
 EXTERN_C LIBAPI const char* version(void);
 EXTERN_C LIBAPI int initialize(term_config_t*);
