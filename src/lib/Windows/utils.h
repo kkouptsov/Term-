@@ -24,6 +24,7 @@ HANDLE get_handle(DWORD);
 void get_screen_dimensions(CONSOLE_SCREEN_BUFFER_INFO &);
 bool isatty();
 void get_mode(DWORD &);
+void copy_string_to_buffer(std::string, char**);
 
 }
 }

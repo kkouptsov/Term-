@@ -79,5 +79,14 @@ bool isatty() {
 }
 
 
+void copy_string_to_buffer(std::string str, char** buf)
+{
+	size_t len = str.size();
+	if (*buf != nullptr) delete(*buf);
+	*buf = new char[len + 1];
+	str.copy(*buf, len);
+	(*buf)[len] = '\0';
+}
+
 }
 }
