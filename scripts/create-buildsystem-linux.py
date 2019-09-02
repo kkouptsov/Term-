@@ -7,7 +7,7 @@ from subprocess import check_call
   Convenience script
 """
 
-print 'python version: ', sys.version
+print('python version: ', sys.version)
 
 project_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
@@ -38,12 +38,12 @@ cmake_args = [
 	SOURCE
 ]
 
-print ''
-print BUILD,'$ ',cmake_args[0],'\\'
+print('')
+print(BUILD,'$ ',cmake_args[0],'\\')
 for arg in cmake_args[1:-1]:
-        print '\t',arg,'\\'
-print '\t',cmake_args[-1]
-print ''
+        print('\t',arg,'\\')
+print('\t',cmake_args[-1])
+print('')
 
 curdir = os.getcwd()
 try:
@@ -51,7 +51,7 @@ try:
 	os.chdir(BUILD)
 	try_remove_file('CMakeCache.txt')
 	check_call(cmake_args)
-	print 'done!'
+	print('done!')
 
 finally:
 	os.chdir(curdir)
